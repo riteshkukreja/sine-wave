@@ -111,7 +111,7 @@ Object describing the position of the start of the sine wave. Contains keys ```x
 
 ```javascript
   var waveList = [];
-  rs = ["#F44336", "#E91E63", "#9C27B0", "#673AB7", "#3F51B5", "#2196F3", "#03A9F4", "#00BCD4"];
+  var colors = ["#F44336", "#E91E63", "#9C27B0", "#673AB7", "#3F51B5", "#2196F3", "#03A9F4", "#00BCD4"];
 
 	/**
 	 *	Clear the canvas and then draw all the waves on the canvas. Utilize requestAnimationFrame for recursion.
