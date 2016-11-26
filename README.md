@@ -1,6 +1,6 @@
 # Sine Wave Animation
 
-Its a simple javascript plugin to build a beautiful sine wave on the given canvas. It allows user to add multiple elements on the same canvas.
+Its a simple javascript plugin to build a beautiful sine wave on the given canvas. It allows user to add multiple elements on the same canvas. A demo of the working project is [here](https://riteshkukreja.github.io/sine-wave/).
 
 ## Get Started
 ### Setting up the Environment
