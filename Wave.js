@@ -4,6 +4,7 @@
  *	Description: Build a Sine wave on the canvas element, based on tweaks by the user.
  *	Author: RITESH KUKREJA
  *	Website: riteshkukreja.wordpress.com
+ *	Github: https://github.com/riteshkukreja/sine-wave/
  *
 **/
 var Wave = function(config) {
@@ -12,8 +13,8 @@ var Wave = function(config) {
 		throw "Provide a valid canvas element for the application.";
 
 	// Holds the canvas and context object
-	var canvas = config.canvas || null;
-	var context = canvas.getContext("2d") || null;
+	var canvas = config.canvas;
+	var context = canvas.getContext("2d");
 
 	// Tweaking settings
 	// Spacing between two circles on the line
@@ -38,7 +39,7 @@ var Wave = function(config) {
 	var lineWidth = config.lineWidth || 4;
 
 	// Boolean: Show the outline of the wave
-	var outline = (typeof config.outline != "undefined" ? config.outline : false);
+	var outline = (typeof config.outline != "undefined" ? config.outline : true);
 
 	// Boolean: Fill the wave to the bottom of the canvas with the given color
 	var fill = (typeof config.fill != "undefined" ? config.fill : false);
@@ -107,8 +108,27 @@ var Wave = function(config) {
 	}
 
 	/**
-	 *	Re-animation Jutsu
+	 *	Utility Method
+	 *	Clear Method to clear the entire canvas
+	**/
+	var clear = function() {
+		context.clearRect(0, 0, canvas.width, canvas.height);
+	}
+
+	/**
+	 *	Visualize the wave
 	 *	Main Calling Method of start of application
+	**/
+	var animate = function() {
+		requestAnimationFrame(animate);
+		clear();
+		phase += getRandomInt(10, 15) + shift;
+		buildSine(canvas.width, phase, color);
+	}
+
+	/**
+	 *	Re-animation Jutsu
+	 *	Draw once the wave on the canvas, used when multiple elements must be drawn simultaneously.
 	**/
 	var reanimate = function() {
 		phase += getRandomInt(10, 15) + shift;
@@ -118,7 +138,15 @@ var Wave = function(config) {
 	/**
 	 *	Constructor Method
 	**/ 
-	this.draw = function() {
+	this.redraw = function() {
 		reanimate();
+	}
+
+	this.draw = function() {
+		animate();
+	}
+
+	this.clearCanvas = function() {
+		clear();
 	}
 }

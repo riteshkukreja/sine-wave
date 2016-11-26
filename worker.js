@@ -50,7 +50,7 @@ window.onload = function() {
 		clear();
 
 		for(var w of waveList)
-			w.draw();
+			w.redraw();
 	}
 
 	/**
@@ -67,7 +67,9 @@ window.onload = function() {
 					amplitude: getRandomInt(40, 100),
 					outline: true
 				})
-				);
+			);
+
+			//waveList[0].draw();
 		}
 
 		draw();
