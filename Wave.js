@@ -92,7 +92,7 @@ var Wave = function(config) {
 	/**
 	 *	Build the entire sine wave using drawPoint()
 	**/
-	var buildSine = function(wavelength, phase, color) {
+	var buildSine = function(wavelength, phase, color, amplitude, frequency) {
 		for(var i = origin.x; i < origin.x+wavelength; i++) {
 			var y = amplitude * Math.sin(frequency * (i + phase));
 			drawPoint(i, origin.y+y, color);
@@ -118,32 +118,50 @@ var Wave = function(config) {
 	/**
 	 *	Visualize the wave
 	 *	Main Calling Method of start of application
+	 *
+	 *	Config Object provides a temporary change in the nature of the wave and can be used to define animations
 	**/
-	var animate = function() {
+	var animate = function(config) {
 		requestAnimationFrame(animate);
 		clear();
 		phase += getRandomInt(10, 15) + shift;
-		buildSine(canvas.width, phase, color);
+
+		// consider changes based on config object
+		var amp 	= 	(typeof config != "undefined" ? config.amplitude 	|| amplitude : amplitude);
+		var clr 	= 	(typeof config != "undefined" ? config.color 		|| color : color);
+		var ph 		= 	(typeof config != "undefined" ? config.phase 		|| phase : phase);
+		var freq 	= 	(typeof config != "undefined" ? config.frequency 	|| frequency : frequency);
+
+		buildSine(canvas.width, ph, clr, amp, freq);
 	}
 
 	/**
 	 *	Re-animation Jutsu
 	 *	Draw once the wave on the canvas, used when multiple elements must be drawn simultaneously.
+	 *
+	 *	Config Object provides a temporary change in the nature of the wave and can be used to define animations
 	**/
-	var reanimate = function() {
+	var reanimate = function(config) {
 		phase += getRandomInt(10, 15) + shift;
-		buildSine(canvas.width, phase, color);
+
+		// consider changes based on config object
+		var amp 	= 	(typeof config != "undefined" ? config.amplitude 	|| amplitude : amplitude);
+		var clr 	= 	(typeof config != "undefined" ? config.color 		|| color : color);
+		var ph 		= 	(typeof config != "undefined" ? config.phase 		|| phase : phase);
+		var freq 	= 	(typeof config != "undefined" ? config.frequency 	|| frequency : frequency);
+
+		buildSine(canvas.width, ph, clr, amp, freq);
 	}
 
 	/**
 	 *	Constructor Method
 	**/ 
-	this.redraw = function() {
-		reanimate();
+	this.redraw = function(config) {
+		reanimate(config);
 	}
 
-	this.draw = function() {
-		animate();
+	this.draw = function(config) {
+		animate(config);
 	}
 
 	this.clearCanvas = function() {
