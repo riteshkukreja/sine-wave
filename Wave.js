@@ -47,11 +47,36 @@ var Wave = function(config) {
 	// Boolean: Fill the wave to the bottom of the canvas with the color gradient, needs fill property to be set
 	var gradient = (typeof config.gradient != "undefined" ? config.gradient : false);
 
+	// Boolean: fix start and end points
+	var fixedStart = (typeof config.fixedStart != "undefined" ? config.fixedStart : false);
+	var fixedEnd = (typeof config.fixedEnd != "undefined" ? config.fixedEnd : false);
+	
+	// number between 0-1: Damping factor
+	var damping = (typeof config.damping === "number" ? config.damping : 0.5);
+
 	// Position from wave to start drawing
 	var origin = config.origin || {
 		x: 0,
 		y: canvas.height/2
 	};
+
+	/**
+	 * Map a number from one range to another
+	 */
+	const map = (num, in_min, in_max, out_min, out_max) => {
+		return (num - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+	};
+		
+	/**
+	 * Provide damping factor which ranges from 0 - size - 0.
+	 */
+	const damp = (start, end, x, size) => {
+		const mid = (start + end)/2;
+		if(x >= mid)
+			return -map(x, mid, end, 0, size) + size;
+		else
+			return map(x, start, mid, 0, size);
+	}
 
 	/**
 	 *	Draw a single point on the canvas
@@ -95,7 +120,16 @@ var Wave = function(config) {
 	var buildSine = function(wavelength, phase, color, amplitude, frequency) {
 		for(var i = origin.x; i < origin.x+wavelength; i++) {
 			var y = amplitude * Math.sin(frequency * (i + phase));
-			drawPoint(i, origin.y+y, color);
+
+			if(fixedStart && fixedEnd) {
+				drawPoint(i, origin.y + damp(origin.x, origin.x + wavelength, i, damping) * y, color);
+			} else if(fixedStart) {
+				drawPoint(i, origin.y + map(i, origin.x, origin.x + wavelength, 0, damping) * y, color);
+			} else if(fixedEnd) {
+				drawPoint(i, origin.y + ( damping -map(i, origin.x, origin.x + wavelength, 0, damping)) * y, color);
+			} else {
+				drawPoint(i, origin.y+y, color);
+			}
 		}
 	}
 
@@ -122,7 +156,7 @@ var Wave = function(config) {
 	 *	Config Object provides a temporary change in the nature of the wave and can be used to define animations
 	**/
 	var animate = function(config) {
-		requestAnimationFrame(animate);
+		//requestAnimationFrame(animate);
 		clear();
 		phase += getRandomInt(10, 15) + shift;
 
@@ -133,6 +167,7 @@ var Wave = function(config) {
 		var freq 	= 	(typeof config != "undefined" ? config.frequency 	|| frequency : frequency);
 
 		buildSine(canvas.width, ph, clr, amp, freq);
+		setTimeout(animate, 1000/20);
 	}
 
 	/**

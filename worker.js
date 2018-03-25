@@ -63,8 +63,11 @@ window.onload = function() {
 					canvas: canvas, 
 					color: colors[getRandomInt(0, colors.length-1)], 
 					phase: getRandomInt(0, 360), 
-					shift: getRandomInt(-70, 70), 
-					amplitude: getRandomInt(40, 100),
+					shift: getRandomInt(-10, 10), 
+					amplitude: getRandomInt(100, 500),
+					frequency: 0.01,
+					fixedStart: true,
+					fixedEnd: true,
 					outline: true
 				})
 			);

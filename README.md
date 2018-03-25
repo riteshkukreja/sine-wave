@@ -107,6 +107,15 @@ Boolean flag to add gradient to the fill property of the sine wave. The gradient
 ### origin
 Object describing the position of the start of the sine wave. Contains keys ```x``` and ```y``` for defining coordinates of the wave from the top left of the canvas. Default value is ```{ x: 0, y: canvas.height/2 }```.
 
+### fixedStart
+Boolean flag to fix the start position of wave. The y offset at start position will be 0. A damping factor will be applied to the rest of the wave depending upon the distance from the start position. Default value is ```false```.
+
+### fixedEnd
+Boolean flag to fix the end position of wave. The y offset at end position will be 0. A damping factor will be applied to the rest of the wave depending upon the distance from the end position. Default value is ```false```.
+
+### damping
+Damping factor applied to each wave y-coordinate if fixedStart or/and fixedEnd is enabled. Default value is ```0.5```.
+
 ## Building three Sine waves on the same Canvas
 
 ```javascript
