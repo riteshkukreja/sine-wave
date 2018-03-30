@@ -24,8 +24,8 @@ var colors = ["#F44336", "#E91E63", "#9C27B0", "#673AB7", "#3F51B5", "#2196F3", 
 window.onload = function() {
 
 	// Canvas will cover up the entire screen
-	canvas.width = screen.width;
-	canvas.height = screen.height;
+	canvas.width = window.innerWidth;
+	canvas.height = window.innerHeight;
 
 	/**
 	 *	Clear Method to clear the entire canvas
@@ -45,7 +45,7 @@ window.onload = function() {
 	 *	Clear the canvas and then draw all the waves on the canvas. Utilize requestAnimationFrame for recursion.
 	**/
 	var draw = function() {
-		window.requestAnimationFrame(draw);
+		setTimeout(draw, 1000/30);
 		// draw all features
 		clear();
 
@@ -65,7 +65,7 @@ window.onload = function() {
 					phase: getRandomInt(0, 360), 
 					shift: getRandomInt(-10, 10), 
 					amplitude: getRandomInt(100, 500),
-					frequency: 0.01,
+					//frequency: 0.01,
 					fixedStart: true,
 					fixedEnd: true,
 					outline: true

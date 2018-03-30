@@ -68,15 +68,12 @@ var Wave = function(config) {
 	};
 		
 	/**
-	 * Provide damping factor which ranges from 0 - size - 0.
+	 * Provide damping factor which ranges from 0 - 1 - 0.
 	 */
-	const damp = (start, end, x, size) => {
-		const mid = (start + end)/2;
-		if(x >= mid)
-			return -map(x, mid, end, 0, size) + size;
-		else
-			return map(x, start, mid, 0, size);
-	}
+	const damp = (end, x, size) => {
+		const effectiveValue = 1 - (x / end);
+		return 2 * effectiveValue * (x / end) * size;
+	};
 
 	/**
 	 *	Draw a single point on the canvas
@@ -122,7 +119,7 @@ var Wave = function(config) {
 			var y = amplitude * Math.sin(frequency * (i + phase));
 
 			if(fixedStart && fixedEnd) {
-				drawPoint(i, origin.y + damp(origin.x, origin.x + wavelength, i, damping) * y, color);
+				drawPoint(i, origin.y + damp(origin.x + wavelength, i, damping) * y, color);
 			} else if(fixedStart) {
 				drawPoint(i, origin.y + map(i, origin.x, origin.x + wavelength, 0, damping) * y, color);
 			} else if(fixedEnd) {
@@ -167,7 +164,7 @@ var Wave = function(config) {
 		var freq 	= 	(typeof config != "undefined" ? config.frequency 	|| frequency : frequency);
 
 		buildSine(canvas.width, ph, clr, amp, freq);
-		setTimeout(animate, 1000/20);
+		setTimeout(animate, 1000/30);
 	}
 
 	/**
